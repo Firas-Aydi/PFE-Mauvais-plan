@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
 
 const Share = () => {
-  const [file, setFile] = useState(null);
+const [files, setFiles] = useState([]);
   const [description, setDescription] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyEmail, setCompanyEmail] = useState("");
@@ -21,16 +21,22 @@ const Share = () => {
   const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
-  const upload = async (file) => {
-    try {
+const upload = async (files) => {
+  try {
+    const uploadedImages = [];
+    for (const file of files) {
       const formData = new FormData();
       formData.append("file", file);
       const res = await makeRequest.post("/upload", formData);
-      return res.data;
-    } catch (err) {
-      console.error(err);
+      uploadedImages.push(res.data);
     }
-  };
+    return uploadedImages.join(",");
+  } catch (err) {
+    console.error(err);
+    return "";
+  }
+};
+
 
   const mutation = useMutation({
     mutationFn: (newPost) => makeRequest.post("/posts", newPost),
@@ -82,22 +88,23 @@ const Share = () => {
 
     setErrors({ description: "", companyName: "", companyEmail: "", type: "" });
 
-    let imgUrl = "";
-    if (file) imgUrl = await upload(file);
+let imgUrl = "";
+if (files.length > 0) imgUrl = await upload(files);
 
-    mutation.mutate({
-      description,
-      img: imgUrl,
-      companyName,
-      companyEmail,
-      type,
-    });
+mutation.mutate({
+  description,
+  img: imgUrl, // <-- chaîne "img1.jpg,img2.jpg,..."
+  companyName,
+  companyEmail,
+  type,
+});
+    
+setDescription("");
+setCompanyName("");
+setCompanyEmail("");
+setFiles([]);
+setType("");
 
-    setDescription("");
-    setCompanyName("");
-    setCompanyEmail("");
-    setFile(null);
-    setType("");
   };
 
   return (
@@ -114,11 +121,19 @@ const Share = () => {
             />
           </div>
           <div className="right">
-            {file && (
-              <div className="preview">
-                <img src={URL.createObjectURL(file)} alt="preview" />
-              </div>
-            )}
+            {files.length > 0 && (
+  <div className="preview-multiple">
+    {files.map((f, index) => (
+      <img
+        key={index}
+        src={URL.createObjectURL(f)}
+        alt={`preview-${index}`}
+        style={{ maxWidth: "100px", marginRight: "5px" }}
+      />
+    ))}
+  </div>
+)}
+
           </div>
         </div>
         {errors.description && (
@@ -150,11 +165,13 @@ const Share = () => {
         <div className="bottom">
           <div className="left">
             <input
-              type="file"
-              id="file"
-              style={{ display: "none" }}
-              onChange={(e) => setFile(e.target.files[0])}
-            />
+  type="file"
+  id="file"
+  multiple
+  style={{ display: "none" }}
+  onChange={(e) => setFiles([...e.target.files])}
+/>
+
             <label htmlFor="file" className="upload-item">
               <img src={Image} alt="upload" />
               <span>Ajouter une image</span>

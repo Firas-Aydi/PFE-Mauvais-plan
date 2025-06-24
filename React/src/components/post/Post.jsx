@@ -169,7 +169,7 @@ const Post = ({ post }) => {
               <strong>{post.companyName}</strong>
             </span>
           )}
-<br />
+          <br />
           {/* Affichage du type */}
           {post.type && (
             <span className="post-type">
@@ -179,7 +179,19 @@ const Post = ({ post }) => {
           )}
 
           <p>{post.description}</p>
-          <img src={`/upload/${post.img}`} alt="" />
+          {/* <img src={`/upload/${post.img}`} alt="" /> */}
+          {post.img && (
+            <div className="image-grid">
+              {post.img.split(",").map((imgName, index) => (
+                <img
+                  key={index}
+                  src={`/upload/${imgName.trim()}`}
+                  alt={`post-img-${index}`}
+                  className="post-image"
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Post Actions */}

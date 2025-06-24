@@ -42,8 +42,8 @@ const Login = () => {
       <div className="card">
         <div className="left">
           <h3>
-            Bienvenue sur<h1>Mauvais Plan.</h1>
-          </h3>
+            Bienvenue sur
+          </h3><h1>Mauvais Plan.</h1>
           <p>
             Connecte-toi à ta plateforme pour partager, collaborer et rester à
             jour avec ta communauté.

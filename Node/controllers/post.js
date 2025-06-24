@@ -8,8 +8,6 @@ import bcrypt from "bcrypt";
 export const getPosts = (req, res) => {
   const userId = req.query.userId;
   const token = req.cookies.accessToken;
-  // Vérifie si le token est présent
-  // console.log("Token reçu:", token);
 
   if (!token) return res.status(401).json("Non authentifié!");
 

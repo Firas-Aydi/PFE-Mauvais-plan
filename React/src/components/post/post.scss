@@ -145,12 +145,12 @@
           margin: 5px 0;
           font-size: 14px;
           color: #555;
-        
+
           strong {
             color: #000;
           }
         }
-        
+
         p {
           font-size: 16px;
           margin-top: 10px;
@@ -161,6 +161,19 @@
           max-height: 500px;
           object-fit: cover;
           margin-top: 20px;
+        }
+        .image-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+          margin-top: 15px;
+        }
+
+        .post-image {
+          width: 100%;
+          height: auto;
+          border-radius: 10px;
+          object-fit: cover;
         }
       }
 

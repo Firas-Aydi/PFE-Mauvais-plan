@@ -87,7 +87,7 @@ const Admin = () => {
       {editingUser && (
         <form onSubmit={handleUpdateUser} className="edit-form">
           <h3>Modifier l'utilisateur</h3>
-          <input
+          {/* <input
             type="text"
             placeholder="Nom"
             value={formData.name}
@@ -109,7 +109,7 @@ const Admin = () => {
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
             }
-          />
+          /> */}
           <select
             value={formData.role}
             onChange={(e) => setFormData({ ...formData, role: e.target.value })}
